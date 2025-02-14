@@ -26,10 +26,23 @@
             targets.wasm32-unknown-unknown.latest.rust-std
           ];
       in
+      with pkgs;
       {
-        devShell = pkgs.mkShell {
-          packages = with pkgs; [
+        devShell = mkShell {
+          strictDeps = true;
+
+          LD_LIBRARY_PATH = lib.makeLibraryPath [ openssl ];
+
+          nativeBuildInputs = [
             rust
+            pkg-config
+          ];
+
+          buildInputs = [
+            openssl
+          ];
+
+          packages = [
             dioxus-cli
           ];
         };
